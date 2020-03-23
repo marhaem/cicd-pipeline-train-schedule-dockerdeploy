@@ -9,4 +9,17 @@ pipeline {
             }
         }
     }
+    stage('Build Docker Image') {
+        when {
+            branch 'master'
+        }
+        steps {
+            script {
+                app = docker.build("marhaem/train-schdule")
+                app.inside {
+                    sh 'echo $(curl localhost:8080)'
+                }
+            }
+        }
+    }
 }
