@@ -42,7 +42,7 @@ pipeline {
                 milestone(1)
                 withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
                     script {
-                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@prod_dn \"docker pull marhaemm/train-schedule:${env.BUILD.NUMBER}\""
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@prod_dn \"docker pull marhaemm/train-schedule:${env.BUILD_NUMBER}\""
                         try {
                             sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@prod_dn \"docker stop train-schedule\""
                             sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@prod_dn \"docker rm train-schedule\""
@@ -50,7 +50,7 @@ pipeline {
                         catch (err) {
                             echo: 'caught error: $err'
                         }
-                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@prod_dn \"docker run --restart always --name train-schedule -p 3000:3000 -d marhaem/train-schedule:${env.BUILD.NUMBER}\""
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@prod_dn \"docker run --restart always --name train-schedule -p 3000:3000 -d marhaem/train-schedule:${env.BUILD_NUMBER}\""
                     }
                 }
             }
